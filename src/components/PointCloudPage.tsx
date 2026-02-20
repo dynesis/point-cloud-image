@@ -66,6 +66,9 @@ export default function PointCloudPage({ slideIndex }: Props) {
   const [depthScale, setDepthScale] = useState(0.25);
   const [noiseAmount, setNoiseAmount] = useState(0.0);
   const [noiseSpeed, setNoiseSpeed] = useState(0.25);
+  const [bloomIntensity, setBloomIntensity] = useState(0.8);
+  const [bloomThreshold, setBloomThreshold] = useState(0.2);
+  const [bloomSmoothing, setBloomSmoothing] = useState(0.9);
   const [panelOpen, setPanelOpen] = useState(false);
 
   useEffect(() => {
@@ -132,7 +135,11 @@ export default function PointCloudPage({ slideIndex }: Props) {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#0a0a0a]">
       <div className="absolute inset-0 max-w-[1280px] aspect-[21/9] mx-auto">
-        <Scene>
+        <Scene
+          bloomIntensity={bloomIntensity}
+          bloomThreshold={bloomThreshold}
+          bloomSmoothing={bloomSmoothing}
+        >
           <PointCloud
             colorTexture={colorTexture}
             depthTexture={depthTexture}
@@ -286,6 +293,37 @@ export default function PointCloudPage({ slideIndex }: Props) {
               max={2}
               step={0.05}
               onChange={setNoiseSpeed}
+            />
+          </div>
+
+          <h2 className="text-sm font-semibold tracking-wide text-white/90">
+            Glow
+          </h2>
+
+          <div className="flex flex-col gap-3">
+            <Slider
+              label="Intensity"
+              value={bloomIntensity}
+              min={0}
+              max={3}
+              step={0.05}
+              onChange={setBloomIntensity}
+            />
+            <Slider
+              label="Threshold"
+              value={bloomThreshold}
+              min={0}
+              max={1}
+              step={0.01}
+              onChange={setBloomThreshold}
+            />
+            <Slider
+              label="Smoothing"
+              value={bloomSmoothing}
+              min={0}
+              max={1}
+              step={0.01}
+              onChange={setBloomSmoothing}
             />
           </div>
 

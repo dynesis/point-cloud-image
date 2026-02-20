@@ -2,12 +2,21 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Suspense, ReactNode } from "react";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 interface SceneProps {
   children: ReactNode;
+  bloomIntensity?: number;
+  bloomThreshold?: number;
+  bloomSmoothing?: number;
 }
 
-export default function Scene({ children }: SceneProps) {
+export default function Scene({
+  children,
+  bloomIntensity = 0.8,
+  bloomThreshold = 0.2,
+  bloomSmoothing = 0.9,
+}: SceneProps) {
   return (
     <Canvas
       orthographic
@@ -21,6 +30,14 @@ export default function Scene({ children }: SceneProps) {
     >
       <Suspense fallback={null}>
         {children}
+        <EffectComposer>
+          <Bloom
+            intensity={bloomIntensity}
+            luminanceThreshold={bloomThreshold}
+            luminanceSmoothing={bloomSmoothing}
+            mipmapBlur
+          />
+        </EffectComposer>
       </Suspense>
     </Canvas>
   );
